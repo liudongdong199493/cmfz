@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namesapce的值是dao接口的全限定名 -->
+<mapper namespace="com.baizhi.dao.MenuDao">
+    <resultMap id="menuMap" type="Menu">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="iconCls" property="iconCls"></result>
+        <result column="parent_id" property="parent_id"></result>
+        <result column="url" property="url"></result>
+        <collection property="menuList" ofType="Menu">
+            <id column="id2" property="id"></id>
+            <result column="title2" property="title"></result>
+            <result column="iconCls2" property="iconCls"></result>
+            <result column="parent_id2" property="parent_id"></result>
+            <result column="url2" property="url"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getAll" resultMap="menuMap">
+         select ta1.*,ta2.id id2,ta2.title title2,ta2.iconCls iconCls2,ta2.url url2 from (select * from menu where parent_id is  null) ta1 left join menu ta2
+        on ta1.id=ta2.parent_id
+    </select>
+
+    <select id="getOneById" resultType="Menu">
+        select * from menu where id=#{id}
+    </select>
+
+
+</mapper>

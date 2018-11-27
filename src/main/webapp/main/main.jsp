@@ -4,13 +4,123 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>持名法州主页</title>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../themes/IconExtension.css">
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+
     <script type="text/javascript">
         <!--菜单处理-->
+        $(function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/menu/getAll.do",
+                type: "post",
+                dataType: "json",//告知返回的json串，需要转为js对象
+                success: function (data) {
+                    //alert(data);
+                    var list = data.list;
+                    for (var j = 0; j < list.length; j++) {
+                        $('#aa').accordion('add', {
+                            title: list[j].title,
+                            content: function () {
+                                var menuList = list[j].menuList;
+                                var html = "";
+                                for (var i = 0; i < menuList.length; i++) {
+                                    //html+='<a href="javascript:void(0)" onclick="toAddTabs(menuList[i])">'+menuList[i].title+'</a></br>';
+                                    var icon = menuList[i].iconCls;
+                                    var ima = icon.substring(icon.indexOf("-") + 1);
+                                    html += '<p align="center" onclick="toAddTabs(' + menuList[i].id + ');">' +
+                                        '<img src="${pageContext.request.contextPath}/themes/icons/' + ima + '.png" title=""/>' + menuList[i].title + '</p>';
+                                }
+                                return html;
+                            },
+                            iconCls: list[j].iconCls,
+                            selected: true
+                        });
+                    }
+                }
+            });
+
+            //创建修改对话框
+            $("#updateDialog").dialog({
+                title: "修改密码",
+                width: 400,
+                height: 200,
+                closed: true,
+                cache: false,
+                modal: true
+            });
+            //创建修改对话框===EN===
+
+        });
+
+        function toAddTabs(obj) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/menu/getOneById.do",
+                type: "post",
+                data: "id=" + obj,
+                dataTyp: "json",
+                success: function (data) {
+                    var menu = data.menu;
+                    //alert(menu.iconCls);
+                    var isExist = $("#tt").tabs("exists", menu.title);
+                    if (isExist) {
+                        $("#tt").tabs("select", menu.title);
+                    } else {
+                        $("#tt").tabs("add", {
+                            title: menu.title,
+                            iconCls: menu.iconCls,
+                            fit: true,
+                            arrow: true,
+                            pill: true,
+                            closable: true,//关闭按钮
+                            content: '<iframe src="${pageContext.request.contextPath}/manage/' + menu.url + '?id=' + data.id + '" width="100%" height="100%"></iframe>'
+                        });
+                    }
+
+                }
+            });
+        }
+
+        //修改密码验证
+        function check() {
+            var passwoed1 = parseInt($("#password1").val());
+            var passwoed2 = parseInt($("#password2").val());
+            if (passwoed1 == passwoed2 && passwoed1 != 0 && passwoed2 != 0) {
+                return true;
+            } else {
+                $("#password2").next().html("两次密码输入不一致");
+                return false;
+            }
+        }
+
+        function updatePassword() {
+            $("#updateDialog").dialog("open");
+        }
+
+        //修改密码验证===END===
+        function toUpdatePassword() {
+            var password1 = parseInt($("#password1").val());
+            if (check()) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/admin/updatePassword.do",
+                    data: "password1=" + password1,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            //alert(data);
+                            location = "${pageContext.request.contextPath}/login.jsp";
+                        } else {
+                            alert("修改失败");
+                        }
+                    }
+                });
+            }
+
+        }
+
     </script>
 
 </head>
@@ -19,10 +129,12 @@
     <div style="font-size: 24px;color: #FAF7F7;font-family: 楷体;font-weight: 900;width: 500px;float:left;padding-left: 20px;padding-top: 10px">
         持名法州后台管理系统
     </div>
-    <div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">欢迎您:xxxxx
-        &nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改密码</a>&nbsp;&nbsp;<a href="#"
-                                                                                                              class="easyui-linkbutton"
-                                                                                                              data-options="iconCls:'icon-01'">退出系统</a>
+    <div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">
+        欢迎您:${sessionScope.admin.username}
+        &nbsp;<a href="javascript:void(0)" onclick="updatePassword()" class="easyui-linkbutton"
+                 data-options="iconCls:'icon-edit'">修改密码</a>&nbsp;&nbsp;
+        <a href="${pageContext.request.contextPath}/admin/logout.do" class="easyui-linkbutton"
+           data-options="iconCls:'icon-01'">退出系统</a>
     </div>
 </div>
 <div data-options="region:'south',split:true" style="height: 40px;background: #5C160C">
@@ -40,5 +152,15 @@
              style="background-image:url(image/shouye.jpg);background-repeat: no-repeat;background-size:100% 100%;"></div>
     </div>
 </div>
+
+<!--  修改密码话框 -->
+<div id="updateDialog">
+    <form id="updateForm" method="post">
+        新密码：<input type="password" id="password1" name="password1"/><br/>
+        确&nbsp;&nbsp;认：<input type="password" id="password2" onblur="check()"/><span style="color: red"></span><br/>
+        <input type="submit" value="修改" onclick="toUpdatePassword()"/>
+    </form>
+</div>
+<!--  修改对话框 ===END===-->
 </body>
 </html>

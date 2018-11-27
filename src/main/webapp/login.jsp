@@ -7,31 +7,49 @@
     <meta http-equiv="description" content="this is my page">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/script/jquery.js"></script>--%>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/script/common.js"></script>--%>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="css/common.css" type="text/css"></link>
-    <link rel="stylesheet" href="css/login.css" type="text/css"></link>
-    <script type="text/javascript" src="script/jquery.js"></script>
-    <script type="text/javascript" src="script/common.js"></script>
+    <link rel="stylesheet" href="css/common.css" type="text/css"/>
+    <link rel="stylesheet" href="css/login.css" type="text/css"/>
+
     <script type="text/javascript">
 
         $(function () {
             //点击更换验证码：
             $("#captchaImage").click(function () {//点击更换验证码
-                alert("自己做");
+                $(this).prop("src", "${pageContext.request.contextPath}/code.do?time=" + (new Date()).getTime());
             });
 
-            //  form 表单提交
-            $("#loginForm").bind("submit", function () {
-                alert("自己做");
-                return false;
-            });
         });
+
+        function login() {
+            //  form 表单提交
+            $("#loginForm").form("submit", {
+                url: "${pageContext.request.contextPath}/admin/login.do",
+                //表单验证
+                onSubmit: function () {
+                    return true;
+                },
+                success: function (data) {
+                    //alert(data);
+                    data = JSON.parse(data);
+                    if (data.isLogin) {
+                        location = "${pageContext.request.contextPath}/main/main.jsp";
+                    } else {
+                        alert("登录失败");
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>
 
 <div class="login">
-    <form id="loginForm" action="../back/index.html" method="post">
+    <form id="loginForm" method="post">
 
         <table>
             <tbody>
@@ -43,7 +61,7 @@
                     用户名:
                 </th>
                 <td>
-                    <input type="text" name="user.name" class="text" value="xxx" maxlength="20"/>
+                    <input type="text" name="username" class="text" value="xxx" maxlength="20"/>
                 </td>
             </tr>
             <tr>
@@ -51,7 +69,7 @@
                     密&nbsp;&nbsp;&nbsp;码:
                 </th>
                 <td>
-                    <input type="password" name="user.password" class="text" value="xxx" maxlength="20"
+                    <input type="password" name="password" class="text" value="xxx" maxlength="20"
                            autocomplete="off"/>
                 </td>
             </tr>
@@ -60,8 +78,9 @@
                 <td>&nbsp;</td>
                 <th>验证码:</th>
                 <td>
-                    <input type="text" id="enCode" name="enCode" class="text captcha" maxlength="4" autocomplete="off"/>
-                    <img id="captchaImage" class="captchaImage" src="img/captcha.jpg" title="点击更换验证码"/>
+                    <input type="text" id="enCode" name="code" class="text captcha" maxlength="4" autocomplete="off"/>
+                    <img id="captchaImage" class="captchaImage" src="${pageContext.request.contextPath}/code.do"
+                         title="点击更换验证码"/>
                 </td>
             </tr>
             <tr>
@@ -76,9 +95,8 @@
                 <td>&nbsp;</td>
                 <th>&nbsp;</th>
                 <td>
-                    <input type="button" class="homeButton" value="" onclick="location.href='/'"><input type="submit"
-                                                                                                        class="loginButton"
-                                                                                                        value="登录">
+                    <input type="button" class="homeButton" value="" onclick="location.href='/'">
+                    <input type="button" class="loginButton" value="登录" onclick="login()">
                 </td>
             </tr>
             </tbody>
