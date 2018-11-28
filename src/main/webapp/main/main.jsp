@@ -22,20 +22,16 @@
                     //alert(data);
                     var list = data.list;
                     for (var j = 0; j < list.length; j++) {
+                        var html = "";
+                        $.each(list[j].menuList, function (index, menu) {
+                            /*html += '<p align="center"><a id="btn" href="#" onclick="toAddTabs("'+menu.title+'","'+menu.iconCls+'","'+menu.url+'");"' +
+                                'class="easyui-linkbutton" data-options="iconCls:\''+menu.iconCls+'\'">'+menu.title+'</a></p>';*/
+                            html += "<p align='center'><a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" onclick=\"toAddTabs('" + menu.title + "','" + menu.iconCls + "','" + menu.url + "')\" " +
+                                "data-options=\"iconCls:'" + menu.iconCls + "'\">" + menu.title + "</a></p>";
+                        })
                         $('#aa').accordion('add', {
                             title: list[j].title,
-                            content: function () {
-                                var menuList = list[j].menuList;
-                                var html = "";
-                                for (var i = 0; i < menuList.length; i++) {
-                                    //html+='<a href="javascript:void(0)" onclick="toAddTabs(menuList[i])">'+menuList[i].title+'</a></br>';
-                                    var icon = menuList[i].iconCls;
-                                    var ima = icon.substring(icon.indexOf("-") + 1);
-                                    html += '<p align="center" onclick="toAddTabs(' + menuList[i].id + ');">' +
-                                        '<img src="${pageContext.request.contextPath}/themes/icons/' + ima + '.png" title=""/>' + menuList[i].title + '</p>';
-                                }
-                                return html;
-                            },
+                            content: html,
                             iconCls: list[j].iconCls,
                             selected: true
                         });
@@ -56,32 +52,23 @@
 
         });
 
-        function toAddTabs(obj) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/menu/getOneById.do",
-                type: "post",
-                data: "id=" + obj,
-                dataTyp: "json",
-                success: function (data) {
-                    var menu = data.menu;
-                    //alert(menu.iconCls);
-                    var isExist = $("#tt").tabs("exists", menu.title);
-                    if (isExist) {
-                        $("#tt").tabs("select", menu.title);
-                    } else {
-                        $("#tt").tabs("add", {
-                            title: menu.title,
-                            iconCls: menu.iconCls,
-                            fit: true,
-                            arrow: true,
-                            pill: true,
-                            closable: true,//关闭按钮
-                            content: '<iframe src="${pageContext.request.contextPath}/manage/' + menu.url + '?id=' + data.id + '" width="100%" height="100%"></iframe>'
-                        });
-                    }
+        function toAddTabs(title, iconCls, url) {
+            //console.log(title+iconCls+url);
+            var isExist = $("#tt").tabs("exists", title);
+            if (isExist) {
+                $("#tt").tabs("select", title);
+            } else {
+                $("#tt").tabs("add", {
+                    title: title,
+                    iconCls: iconCls,
+                    fit: true,
+                    arrow: true,
+                    pill: true,
+                    closable: true,//关闭按钮
+                    content: '<iframe src="${pageContext.request.contextPath}' + url + '" width="100%" height="100%"></iframe>'
+                });
+            }
 
-                }
-            });
         }
 
         //修改密码验证
