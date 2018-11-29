@@ -93,7 +93,7 @@
                 detailFormatter: function (rowIndex, rowData) {
                     var data = formatDatebox(rowData.carousel_date);
                     return '<table><tr>' +
-                        '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}' + rowData.carousel_imgPath + '" style="height:50px;"></td>' +
+                        '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}' + rowData.carousel_imgPath + '" style="height:100px;"></td>' +
                         '<td style="border:0">' +
                         '<p>标题:' + rowData.carousel_title + '</p>' +
                         '<p>描述: ' + rowData.carousel_desc + '</p>' +
@@ -244,7 +244,7 @@
                 <div></div>
             </dd>
             <dd class="hegas">
-                <a href="otherpage.php" class="easyui-linkbutton" data-options="iconCls:'icon-save'"
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'"
                    onclick="addData()">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="closeDialog()">取消</a>
             </dd>

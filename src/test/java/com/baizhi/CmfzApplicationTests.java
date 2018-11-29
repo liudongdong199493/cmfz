@@ -1,7 +1,7 @@
 package com.baizhi;
 
-import com.baizhi.service.MenuService;
-import com.baizhi.service.impl.MenuServiceImpl;
+import com.baizhi.service.AlbumService;
+import com.baizhi.service.impl.AlbumServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,9 +15,9 @@ public class CmfzApplicationTests {
 
     @Test
     public void contextLoads() {
-        MenuService menuService = new MenuServiceImpl();
-        Map all = menuService.getAll();
-        System.out.println(all.get("list"));
+        AlbumService albumService = new AlbumServiceImpl();
+        Map all = albumService.getAll(1, 3);
+        System.out.println(all.get("rows"));
     }
 
 }

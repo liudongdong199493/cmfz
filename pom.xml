@@ -123,6 +123,13 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <!--mp3时长-->
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>jaudiotagger</artifactId>
+            <version>2.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>

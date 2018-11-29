@@ -56,25 +56,21 @@ public class CarouselController {
     public @ResponseBody
     boolean insert(Carousel carousel, BindingResult bindingResult, MultipartFile file, HttpServletRequest request) {
         try {
-            if (file == null) {
-                return false;
-            }
             String fileName = file.getOriginalFilename();
             fileName = new Date().getTime() + "_" + fileName;
             String realPath = request.getSession().getServletContext().getRealPath("/img/shouye");
             carousel.setCarousel_imgPath("/img/shouye/" + fileName);
             try {
                 file.transferTo(new File(realPath + "\\" + fileName));
-                System.out.println(carousel + "iiiiiiiiiiiii");
                 carouselService.insert(carousel);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        return true;
 
     }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namesapce的值是dao接口的全限定名 -->
+<mapper namespace="com.baizhi.dao.AlbumDao">
+    <resultMap id="albumMap" type="Album">
+        <id column="album_id" property="id"></id>
+        <result column="album_title" property="title"></result>
+        <result column="coverlmg" property="coverlmg"></result>
+        <result column="count" property="count"></result>
+        <result column="score" property="score"></result>
+        <result column="author" property="author"></result>
+        <result column="broadCast" property="broadCast"></result>
+        <result column="brief" property="brief"></result>
+        <result column="publishDate" property="publishDate"></result>
+        <collection property="children" ofType="Chapter">
+            <id column="id" property="id"></id>
+            <result column="title" property="title"></result>
+            <result column="size" property="size"></result>
+            <result column="duration" property="duration"></result>
+            <result column="downPath" property="downPath"></result>
+            <result column="uploadDate" property="uploadDate"></result>
+        </collection>
+    </resultMap>
+    <select id="getAll" resultMap="albumMap">
+       SELECT * from (select * from album LIMIT #{start},#{rows}) ta1 left join chapter ta2
+        on ta1.album_id=ta2.album_id
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from album
+    </select>
+
+    <insert id="insert">
+        insert into album(album_id,album_title,coverlmg,count,score,author,broadCast,brief,publistDate)
+        values(#{id},#{title},#{coverlmg},#{count},#{score},#{author},#{broadCast},#{brief},SYSDATE())
+
+    </insert>
+
+</mapper>

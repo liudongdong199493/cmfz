@@ -22,7 +22,6 @@ public class CarouselServiceImpl implements CarouselService {
         int start = (page - 1) * rows;
         List<Carousel> list = carouselDao.getAll(start, rows);
         int count = carouselDao.getCount();
-        System.out.println(list);
         Map map = new HashMap();
         map.put("total", count);
         map.put("rows", list);
