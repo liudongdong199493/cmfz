@@ -31,7 +31,7 @@ public class ChapterController {
         chapter.setTitle(title);
         chapter.setAlbum_id(album_id);
         long size = multipartFile.getSize();
-        String sizeStr = (size / 1024.0 / 1024.0) + "M";
+        String sizeStr = String.format("%.2f", (size / 1024.0 / 1024.0) )+ "M";
         chapter.setSize(sizeStr);
         String realPath = request.getSession().getServletContext().getRealPath("/");
         File file = new File(realPath + "/upload");

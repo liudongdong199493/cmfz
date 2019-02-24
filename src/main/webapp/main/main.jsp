@@ -7,6 +7,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/echarts.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/china.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../themes/IconExtension.css">

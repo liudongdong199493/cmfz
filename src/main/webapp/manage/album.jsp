@@ -128,7 +128,7 @@
             });
 
             // 文件上传(文件域)的改变事件
-            $(':file').change(function (event) {
+            $("#fengmian").change(function (event) {
                 //  HTML5 js 对象的获取
                 var files = event.target.files, file;
                 if (files && files.length > 0) {
@@ -220,7 +220,8 @@
     </form>
 </div>
 <div id="audio">
-    <audio id="audio_id" src="" autoplay="autoplay" controls="controls" loop="loop"></audio>
+    <audio id="audio_id" src="" autoplay="autoplay" controls="controls" loop="loop">
+    </audio>
 </div>
 
 <div id="addAlbumDialog">
@@ -229,7 +230,7 @@
             专题名称：<input type="text" name="title" data-options="required:true"/>
         </div>
         <div>
-            专题封面：<input name="multipartFile" type="file"/>
+            专题封面：<input name="multipartFile" type="file" id="fengmian"/>
             <img src="" width="100" height="100" id="image"/>
 
         </div>

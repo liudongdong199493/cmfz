@@ -5,17 +5,17 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import tk.mybatis.spring.annotation.MapperScan;
 
 import java.util.Properties;
 
-@MapperScan("com.baizhi.dao")
+@MapperScan(basePackages = "com.baizhi.dao")
 @SpringBootApplication
 @Configuration
 public class CmfzApplication {

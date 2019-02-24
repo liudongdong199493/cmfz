@@ -10,5 +10,5 @@ public interface AlbumDao {
 
     int getCount();
 
-    void insert(Album album);
+    int insert(Album album);
 }

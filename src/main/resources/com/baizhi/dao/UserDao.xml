@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namesapce的值是dao接口的全限定名 -->
+<mapper namespace="com.baizhi.dao.UserDao">
+    <select id="countByDate" resultType="int">
+        SELECT count(*) from user WHERE DATEDIFF(SYSDATE(),regist_date) <![CDATA[<=]]>#{time}
+    </select>
+    <select id="selectUserProfil" resultType="UserDTO">
+
+      SELECT province name,COUNT(user_id) value from user where sex=#{sex} GROUP BY province
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from user
+    </select>
+    <select id="getAll" resultType="User">
+        select user_id,username,regist_date from user limit #{start},#{rows}
+    </select>
+
+    <select id="queryUserByName" resultType="User">
+        select * from user where username=#{username}
+    </select>
+    <select id="queryRandom" resultType="User">
+        SELECT * FROM user where user_id !=#{uid} ORDER BY RAND() LIMIT 5
+    </select>
+
+</mapper>

@@ -14,5 +14,5 @@ public interface CarouselDao {
 
     void update(Carousel carousel);
 
-    void insert(Carousel carousel);
+    int insert(Carousel carousel);
 }

@@ -4,7 +4,7 @@ import com.baizhi.entity.Menu;
 
 import java.util.List;
 
-public interface MenuDao {
+public interface MenuDao  {
     List<Menu> getAll();
 
     Menu getOneById(int id);
