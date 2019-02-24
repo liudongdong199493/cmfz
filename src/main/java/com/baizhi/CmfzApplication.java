@@ -58,6 +58,7 @@ public class CmfzApplication {
         properties.setProperty("kaptcha.textproducer.font.names", "宋体,楷体,微软雅黑");
         Config config = new Config(properties);
         producer.setConfig(config);
+
         return producer;
 
     }
